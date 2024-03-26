@@ -1,15 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Schools from './pages/schools/schools';
+import App from './App';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import School from './pages/school/school';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity
+    }
+  }
+})
+
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<App/>}>
+            <Route path='/schools' element={<Schools/>}/>
+            <Route path='/schools/:id' element={<School/>}/>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

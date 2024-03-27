@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { GlobalContext } from '../../context/context'
 import { SchoolSatInterface } from '../../interfaces/interfaces'
 
 const School = (): JSX.Element => {
   const location = useLocation()
   const schoolData = useContext(GlobalContext)
+  const navigate = useNavigate()
   const [currentSchool, updateCurrentSchool] = useState<SchoolSatInterface>()
   
   useEffect(() => {
@@ -14,6 +15,7 @@ const School = (): JSX.Element => {
 
   return (
     <div className='mt-4'>
+      <div className='mb-2'><a href='#' onClick={() => navigate('../schools')}>{'< back'}</a></div>
       <h2 className='mb-4'>{currentSchool?.school_name}</h2>
       <div className='row'>
         <div className='col-md-4'>

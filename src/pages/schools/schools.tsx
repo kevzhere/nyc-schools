@@ -1,7 +1,4 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import useSatData from '../../hooks/useSatData'
-import useSchoolData from '../../hooks/useSchoolData'
-import { mergeDataByKey } from '../../utilities/utilities'
 import SchoolCard from './schoolCard/schoolCard'
 
 import  './schools.css'
@@ -11,28 +8,33 @@ import { GlobalContext } from '../../context/context'
 
 const Schools = () => {
   const schoolData = useContext(GlobalContext)
-  const [schools, updateSchools] = useState<SchoolSatInterface[]>()
+  const [filteredSchools, updateFilteredSchools] = useState<SchoolSatInterface[]>()
+  const [currentSchools, updateCurrentSchools] = useState<SchoolSatInterface[]>()
   const [searchKey, updateSearchKey] = useState<keyof SchoolSatInterface>('school_name')
   // TODO: add page index to url
   const [pageIndex, updatePageIndex] = useState<number>(0)
-  const totalPages = Math.ceil(schoolData.length / 10)
+  const [totalPages, updateTotalPages] = useState<number>(Math.ceil(schoolData.length / 10))
 
     
   useEffect(() => {
-    updateSchools(schoolData)
+    updateFilteredSchools(schoolData)
   }, [])
 
   useEffect(() => {
-    updateSchools(schoolData.slice(pageIndex, pageIndex + 10))
-  }, [pageIndex])
+    updateCurrentSchools(filteredSchools?.slice(pageIndex, pageIndex + 10))
+  }, [pageIndex, filteredSchools])
+
+  useEffect(() =>{
+    updateTotalPages(Math.ceil((filteredSchools ?? []).length /10))
+  }, [filteredSchools])
 
   // debounce to only run filterSchool after 500ms
   const filterSchools = useCallback(
-    debounce(value => {
-      updateSchools(filterSchool(searchKey, value, schools ?? []))
+    debounce((value) => {
+      updateFilteredSchools(filterSchool(searchKey, value, schoolData))
+      updatePageIndex(0)
     }, 500), []
   )
-
 
   // to filter school base on key and search string
   const filterSchool = (key: keyof SchoolSatInterface, value: string, currentSchools: SchoolSatInterface[]): SchoolSatInterface[] | undefined =>  currentSchools?.filter((school => school[key]?.toLowerCase().includes(value.toLowerCase())))
@@ -52,13 +54,11 @@ const Schools = () => {
         </div>
       </div>
       <div className='row text-center schools'>
-        {schools?.map((data) => <div key={data.dbn} className='card'>
-          <SchoolCard schoolData={data}/>
-        </div>)}
+        {currentSchools?.map((data) => <SchoolCard key={data.dbn} schoolData={data}/>)}
         {/* TODO: also add next x pages to allow user to fast navigate */}
         <div>
-          <button className='me-4' disabled={pageIndex === 0} onClick={() => updatePageIndex(pageIndex - 1)}>prev</button>
-          <button disabled={pageIndex === totalPages} value='next' onClick={() => updatePageIndex(pageIndex + 1)}>next</button>
+          <button type='button' className='me-3 btn btn-info' disabled={pageIndex === 0} onClick={() => updatePageIndex(pageIndex - 1)}>prev</button>
+          <button type='button' className='btn btn-info' disabled={pageIndex === totalPages || totalPages < 2} value='next' onClick={() => updatePageIndex(pageIndex + 1)}>next</button>
         </div>
       </div>
     </div>

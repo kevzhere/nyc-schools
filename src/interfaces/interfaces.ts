@@ -15,9 +15,13 @@ export interface SchoolInterface {
   school_10th_seats?: string
   academicopportunities1?: string
   academicopportunities2?: string
+  academicopportunities3?: string
+  academicopportunities4?: string
   ell_programs?: string
   neighborhood?: string
   building_code?: string
+  advancedplacement_courses?: string
+  language_classes?: string
   location?: string
   phone_number?: string
   fax_number?: string

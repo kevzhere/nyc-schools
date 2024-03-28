@@ -4,14 +4,14 @@ import { GlobalContext } from '../../context/context'
 import { SchoolSatInterface } from '../../interfaces/interfaces'
 
 const School = (): JSX.Element => {
-  const location = useLocation()
+  const { state, pathname } = useLocation()
   const schoolData = useContext(GlobalContext)
   const navigate = useNavigate()
   const [currentSchool, updateCurrentSchool] = useState<SchoolSatInterface>()
   
   useEffect(() => {
-    updateCurrentSchool(location.state ?? schoolData.find((school) => school.dbn === location.pathname.split('/')[2]))
-  })
+    updateCurrentSchool(state ?? schoolData.find((school) => school.dbn === pathname.split('/')[2]))
+  }, [])
 
   return (
     <div className='mt-4'>

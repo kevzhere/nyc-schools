@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import NavBar from './components/navbar/navBar';
 import { useSchoolData } from './hooks/useSchoolData';
 import { useSatData } from './hooks/useSatData';
-import { mergeDataByKey } from './utilities/utilities';
+import { mergeDataByKey } from './pages/utilities/utilities';
 import { GlobalContext } from './context/context';
 import ErrorComponent from './components/error/error';
 import LoaderComponent from './components/loader/loader';

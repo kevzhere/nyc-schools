@@ -1,4 +1,4 @@
-import { SatInterface, SchoolInterface, SchoolSatInterface } from '../interfaces/interfaces'
+import { SatInterface, SchoolInterface, SchoolSatInterface } from '../../interfaces/interfaces'
 import { mergeDataByKey } from './utilities'
 
 const schoolData: SchoolInterface[] = [{

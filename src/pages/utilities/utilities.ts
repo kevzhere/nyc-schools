@@ -1,4 +1,4 @@
-import { SchoolSatInterface } from "../interfaces/interfaces"
+import { SchoolSatInterface } from "../../interfaces/interfaces"
 
 export const mergeDataByKey = ( ...lists: [SchoolSatInterface[]] ): SchoolSatInterface[] =>
 Object.values(
